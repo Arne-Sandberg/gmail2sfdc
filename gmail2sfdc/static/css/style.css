@@ -1,0 +1,53 @@
+.container {
+    width: 900px;
+}
+
+#header {
+    height: 65px;
+    z-index: 1;
+    margin-top: 10px
+}
+
+.logo {
+    color: blue;
+    margin-left: 10px
+}
+
+.heading {
+    text-align: center;
+    font-size: 30px;
+    margin: 20px;
+}
+
+.footer {
+    text-align: center;
+    font-size: 15px;
+    margin: 40px;
+}
+
+.app-icons {
+    text-align: center;
+}
+
+.app-icons img {
+    height: 200px;
+    width: 200px;
+}
+
+.app-icons .connect {
+    cursor: pointer;
+}
+
+.github {
+    height: 150px;
+    width: 150px;
+}
+
+#msgBody {
+    max-height: 300px;
+    overflow: auto;
+}
+
+#msgAttachments {
+    word-wrap: break-word;
+}

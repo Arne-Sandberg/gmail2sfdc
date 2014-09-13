@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Gmail2Sfdc - Connect{% endblock %}
+{% block head %}<script src="../static/js/zap.js"></script>{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-10">
+            <input type="text" id="email" class="form-control" placeholder="Query">
+        </div>
+        <a href="#" class="btn btn-primary col-lg-2">Get Attachments</a>
+    </div>
+    <div class="row">
+        <div class="col-lg-4" id="msgList"></div>
+        <div class="col-lg-8" id="msgContent">
+            <div class="row" id="msgBody"></div>
+            <div class="row" id="msgAttachments"></div>
+        </div>
+    </div>
+
+{% endblock %}
