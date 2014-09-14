@@ -1,31 +1,31 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block title %}Gmail2Sfdc - Connect{% endblock %}
-{% block head %}<script src="../static/js/zap.js"></script>{% endblock %}
+{% block head %}<script src="{% static "zaps/js/zap.js" %}"></script>{% endblock %}
 
 {% block content %}
     <div class="row heading">Connect Gmail & Salesforce</div>
     <div class="row app-icons">
         {% if not is_gmail_connected %}
             <div class="col-lg-6 connect" id="gmail">
-                <img src="../../static/i/gmail.png"><br>
+                <img src="{% static "gmail2sfdc/i/gmail.png" %}"><br>
                 <strong>Connect Gmail</strong>
             </div>
         {% else %}
             <div class="col-lg-6 connected">
-                <img src="../../static/i/gmail.png"><br>
+                <img src="{% static "gmail2sfdc/i/gmail.png" %}"><br>
                 <strong>Connected with Gmail</strong>
             </div>
         {% endif %}
 
         {% if not is_salesforce_connected %}
             <div class="col-lg-6 connect" id="sfdc">
-                <img src="../../static/i/sfdc.png"><br>
+                <img src="{% static "gmail2sfdc/i/sfdc.png" %}"><br>
                 <strong>Connect Salesforce</strong>
             </div>
         {% else %}
             <div class="col-lg-6 connected">
-                <img src="../../static/i/sfdc.png"><br>
+                <img src="{% static "gmail2sfdc/i/sfdc.png" %}"><br>
                 <strong>Connected with Salesforce</strong>
             </div>
         {% endif %}

@@ -1,15 +1,15 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block title %}Gmail2Sfdc - Home{% endblock %}
 
 {% block content %}
     <div class="row heading">Save Gmail attachments to Salesforce documents</div>
     <div class="row app-icons">
         <div class="col-lg-6">
-            <img src="../../static/i/gmail.png">
+            <img src="{% static "gmail2sfdc/i/gmail.png" %}">
         </div>
         <div class="col-lg-6">
-            <img src="../../static/i/sfdc.png">
+            <img src="{% static "gmail2sfdc/i/sfdc.png" %}">
         </div>
     </div>
 
