@@ -13,6 +13,7 @@ import os
 import django.conf.global_settings as DEFAULT_SETTINGS
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+env = os.environ['GMAIL2SFDC_ENV'] if 'GMAIL2SFDC_ENV' in os.environ else None
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -21,11 +22,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '8l4$=lvq$s)0vsym7wlbcjw4f3))nxhuna&j4ytdg$z%xc9!!+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if env == 'local':
+    DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = '*'
 
 
 # Application definition
@@ -91,7 +93,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = "/home/ubuntu/gmail2sfdc/static/"
+if env == 'prod_ec1':
+    STATIC_ROOT = "/home/ubuntu/gmail2sfdc/static/"
 
 #custom settings
 
@@ -99,11 +102,18 @@ TEMPLATE_CONTEXT_PROCESSORS = DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
     'django.core.context_processors.request',
 )
 
-GOOGLE_CLIENT_ID = '9655458160-942191vjqk0kl6fkdtmalqnfpece691v.apps.googleusercontent.com'
+if env == 'local':
+    GOOGLE_CLIENT_ID = '9655458160-942191vjqk0kl6fkdtmalqnfpece691v.apps.googleusercontent.com'
 
-GOOGLE_CLIENT_SECRET = 'XWJR57YKU7Ro3zenItPcQ6z6'
+    GOOGLE_CLIENT_SECRET = 'XWJR57YKU7Ro3zenItPcQ6z6'
 
-GOOGLE_REDIRECT_URI = 'http://localhost:8000/auth/googleAuthCallback'
+    GOOGLE_REDIRECT_URI = 'http://localhost:8000/auth/googleAuthCallback'
+elif env == 'prod_ec1':
+    GOOGLE_CLIENT_ID = '9655458160-hp9apvkhskbjrha00h4qo0l7kje0isep.apps.googleusercontent.com'
+
+    GOOGLE_CLIENT_SECRET = 'AXjCcaejnrzs8ZVZgVVaVcll'
+
+    GOOGLE_REDIRECT_URI = 'http://gmail2sfdc.tk/auth/googleAuthCallback'
 
 SFDC_CLIENT_ID = '3MVG9A2kN3Bn17htG_Lafomxe8JS2zgynZ84.Yjm3WU0f2SFvMc9LcjzJExWzHTsTvvLxuq_j8a8ZXPGTBEPq'
 
