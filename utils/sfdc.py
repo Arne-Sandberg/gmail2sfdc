@@ -87,7 +87,6 @@ class Sfdc:
             req = urllib2.Request(url, json.dumps(params), headers)
             response = urllib2.urlopen(req)
             content = response.read()
-            print content
         except urllib2.HTTPError, e:
             print e.code
             print e.read()

@@ -70,7 +70,7 @@ function getMessages() {
 
     })
     .fail(function(data) {
-        //TODO: handle error. Timeout eems common if the query fetches too many results
+        //TODO: handle error. Timeout seems common if the query fetches too many results
     })
 }
 
