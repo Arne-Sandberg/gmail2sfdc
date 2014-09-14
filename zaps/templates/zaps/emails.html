@@ -4,15 +4,18 @@
 {% block head %}<script src="{% static "zaps/js/zap.js" %}"></script>{% endblock %}
 
 {% block content %}
-    <div class="row">
+    <div class="row" style="margin-bottom: -40px">
         <div class="col-lg-10">
-            <input type="text" id="email" class="form-control" placeholder="Query">
+            <input type="text" id="query" class="form-control" placeholder="Query" value="{{ query }}">
         </div>
-        <a href="#" class="btn btn-primary col-lg-2">Get Attachments</a>
+        <a href="#" class="btn btn-primary col-lg-2" onclick="getMessages()">Get Attachments</a>
     </div>
+    <a href="https://support.google.com/mail/answer/7190?hl=en" target="_blank">Gmail query reference</a>
+    <br><br>
+    <div class="loader hide"><img src="{% static "gmail2sfdc/i/loader.gif" %}"></div>
     <div class="row">
         <div class="col-lg-4" id="msgList"></div>
-        <div class="col-lg-8" id="msgContent">
+        <div class="col-lg-7 pull-right" id="msgContent">
             <div class="row" id="msgBody"></div>
             <div class="row" id="msgAttachments"></div>
         </div>

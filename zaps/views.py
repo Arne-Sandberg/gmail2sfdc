@@ -31,16 +31,15 @@ def connect_apps(request):
 
 
 def emails(request):
-    return render(request, "zaps/emails.html", {})
+    previous_day = datetime.now()-timedelta(days=1)
+    query = "after:%s" % strftime(previous_day, "%Y/%m/%d", )
+    return render(request, "zaps/emails.html", {'query': query})
 
 
 def list_threads(request):
     gmail_service = Google.get_gmail_service(request.session['user_id'])
-
-    last_synced_at = datetime.now()-timedelta(days=1)
+    query = request.GET['query']
     user_id = 'me'
-    query = "after:%s AND has:attachment" % strftime(last_synced_at, "%Y/%m/%d", )
-    page_token = 0
 
     threads_resp = gmail_service.users().threads().list(userId=user_id, q=query).execute()
     threads = threads_resp['threads'] if 'threads' in threads_resp else []
@@ -109,7 +108,7 @@ def upload_to_sfdc(request):
     file_data = attachment['data']
     if file_data:
         sf_auth = Salesforce.objects.get(user__id=request.session['user_id'])
-        Sfdc.insert_document(sf_auth, '00l90000000g5up', file_name, file_data)
+        Sfdc.insert_document(sf_auth, file_name, file_data)
     return HttpResponse('success')
 
 

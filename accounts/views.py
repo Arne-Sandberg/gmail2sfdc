@@ -57,8 +57,7 @@ def sfdc_oauth(request):
 
 
 def sfdc_oauth_callback(request):
-    credentials_str = Sfdc.exchange_code(request.GET['code'])
-    credentials = json.loads(credentials_str)
+    credentials = Sfdc.exchange_code(request.GET['code'])
     try:
         sfdc_auth = Salesforce.objects.get(user__id=request.session['user_id'])
     except ObjectDoesNotExist:
@@ -66,11 +65,14 @@ def sfdc_oauth_callback(request):
 
     if sfdc_auth is None:
         user = MyUser.objects.get(id=request.session['user_id'])
-        sfdc_auth = Salesforce(user=user, access_token=credentials['access_token'], refresh_token=credentials['refresh_token'])
+        sfdc_auth = Salesforce(user=user, access_token=credentials['access_token'],
+                               refresh_token=credentials['refresh_token'],
+                               sf_used_id=credentials['user_id'])
         sfdc_auth.save()
     else:
         sfdc_auth.access_token = credentials['access_token']
         sfdc_auth.refresh_token = credentials['refresh_token']
+        sfdc_auth.sf_used_id = credentials['user_id']
         sfdc_auth.save()
 
     return redirect(reverse('close_window'))

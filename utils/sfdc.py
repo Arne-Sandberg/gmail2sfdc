@@ -11,7 +11,7 @@ from gmail2sfdc import settings
 class Sfdc:
     logger = logging.getLogger(__name__)
     auth_endpoint = 'https://login.salesforce.com/services/oauth2'
-    api_endpoint = 'https://ap1.salesforce.com/services/data/v29.0'
+    api_endpoint = '/services/data/v29.0'
 
     def __init__(self):
         pass
@@ -40,6 +40,13 @@ class Sfdc:
         resp, content = http.request(Sfdc.auth_endpoint + '/token',
                                      'POST', urllib.urlencode(params),
                                      headers={'Content-Type': 'application/x-www-form-urlencoded'})
+        content = json.loads(content)
+        # make one more api call to get user id
+        identity_service_url = content['id']
+        resp, user_data = http.request(identity_service_url,
+                                       headers={'Authorization': 'Bearer ' + content['access_token']})
+        user_data = json.loads(user_data)
+        content['user_id'] = user_data['user_id']
         return content
 
     @staticmethod
@@ -57,19 +64,20 @@ class Sfdc:
         return json.loads(content)
 
     @staticmethod
-    def insert_document(sf_auth, folder_id, file_name, file_data):
-        access_token = Sfdc.refresh_token(sf_auth.refresh_token)['access_token']
+    def insert_document(sf_auth, file_name, file_data):
+        new_auth = Sfdc.refresh_token(sf_auth.refresh_token)
+        access_token = new_auth['access_token']
         headers = {
             'Authorization': 'Bearer ' + access_token,
             'Content-Type': 'application/json'
         }
-        print headers
+        # upload to 'My Documents' folder, folder is is same as user_id in this case
         params = {
-            'folderId': folder_id,
+            'folderId': sf_auth.sf_used_id,
             'name': file_name,
             'body': file_data
         }
-        url = Sfdc.api_endpoint + '/sobjects/Document/'
+        url = new_auth['instance_url'] + Sfdc.api_endpoint + '/sobjects/Document/'
 
         # http = httplib2.Http()
         # resp, content = http.request(Sfdc.api_endpoint+'/sobjects/Document/',

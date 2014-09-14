@@ -44,10 +44,19 @@
 }
 
 #msgBody {
-    max-height: 300px;
+    max-height: 480px;
     overflow: auto;
 }
 
 #msgAttachments {
     word-wrap: break-word;
+}
+
+#msgList {
+    max-height: 480px;
+    overflow: auto;
+}
+
+.loader {
+    text-align: center;
 }

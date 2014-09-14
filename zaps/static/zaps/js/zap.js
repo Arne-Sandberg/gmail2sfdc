@@ -34,11 +34,15 @@ var msgList;
  * gets all messages and renders on UI
  */
 function getMessages() {
-    $("#msgList").html('Loading...');
+    $('.loader').removeClass('hide')
+    $("#msgList").html('');
     $("#msgBody").html('');
     $("#msgAttachments").html('');
-
-    $.getJSON('/zap/list', function(data) {
+    var requestData = {
+        query: $("#query").val()
+    }
+    $.getJSON('/zap/list', requestData, function(data) {
+        $('.loader').addClass('hide')
         $("#msgList").html('');
         msgList = [];
         var msgIndex = 0;
@@ -60,7 +64,14 @@ function getMessages() {
                 renderMessage(message, msgIndex++)
             }
         });
-    });
+        if (msgList.length > 0) {
+            showMessageContent(0);
+        }
+
+    })
+    .fail(function(data) {
+        //TODO: handle error. Timeout eems common if the query fetches too many results
+    })
 }
 
 /**
@@ -70,8 +81,11 @@ function getMessages() {
  */
 function renderMessage(message, index) {
     var subject = getMessageHeaders(message)['Subject']
-    var msgLink = "<br><a href='#' onclick='showMessageContent("+index+")'>"+subject+"</a><br>"
-    $("#msgList").append(msgLink)
+    if (subject) {
+        var msgLink = "<br><a href='#' onclick='showMessageContent("+index+")'>"+subject+"</a><br>"
+        $("#msgList").append(msgLink)
+    }
+    // subject will be undefined for chat messages, ignoring them for now
 }
 
 /**
@@ -81,8 +95,11 @@ function renderMessage(message, index) {
  */
 function renderSubMessage(message, index) {
     var subject = getMessageHeaders(message)['Subject']
-    var msgLink = "<a href='#' style='margin-left: 10px' onclick='showMessageContent("+index+")'>- "+subject+"</a><br>"
-    $("#msgList").append(msgLink)
+    if (subject) {
+        var msgLink = "<a href='#' style='margin-left: 10px' onclick='showMessageContent(" + index + ")'>- " + subject + "</a><br>"
+        $("#msgList").append(msgLink)
+    }
+    // subject will be undefined for chat messages, ignoring them for now
 }
 
 /**
@@ -103,6 +120,7 @@ function getMessageHeaders(message) {
  * @param index
  */
 function showMessageContent(index) {
+    $("#msgBody").css('max-height', '')
     var message = msgList[index]
     //show body
     var content = message.content
@@ -118,6 +136,7 @@ function showMessageContent(index) {
     $("#msgAttachments").html('');
     var attachments = content.attachments
     if (attachments && attachments.length > 0) {
+        $("#msgBody").css('max-height', '300px')
         $("#msgAttachments").append("<br><br><b>Attachments:</b>")
         $.each(attachments, function(ix, att) {
             var dwnldParams = "id="+att.id+"&msgId="+message.id+"&fileName="+att.filename
@@ -129,6 +148,7 @@ function showMessageContent(index) {
 }
 
 function uploadAttachment(e, attId, msgId, fileName) {
+    $(e.target).html('uploading...')
     var requestData = {
         'att_id': attId,
         'msg_id': msgId,
@@ -138,6 +158,9 @@ function uploadAttachment(e, attId, msgId, fileName) {
         if (data == 'success') {
             $(e.target).html('uploaded')
         }
+    })
+    .fail(function(data) {
+        $(e.target).html('Failed. Please try agan!!')
     })
 }
 
