@@ -93,8 +93,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-if env == 'prod_ec1':
-    STATIC_ROOT = "/home/ubuntu/gmail2sfdc/static/"
+STATIC_ROOT = "/home/ubuntu/gmail2sfdc/static/"
 
 #custom settings
 
@@ -108,15 +107,55 @@ if env == 'local':
     GOOGLE_CLIENT_SECRET = 'XWJR57YKU7Ro3zenItPcQ6z6'
 
     GOOGLE_REDIRECT_URI = 'http://localhost:8000/auth/googleAuthCallback'
-elif env == 'prod_ec1':
+
+    SFDC_CLIENT_ID = '3MVG9A2kN3Bn17htG_Lafomxe8JS2zgynZ84.Yjm3WU0f2SFvMc9LcjzJExWzHTsTvvLxuq_j8a8ZXPGTBEPq'
+
+    SFDC_CLIENT_SECRET = '1110308827261502813'
+
+    SFDC_REDIRECT_URI = 'http://localhost:8000/auth/sfdcAuthCallback'
+else:
     GOOGLE_CLIENT_ID = '9655458160-hp9apvkhskbjrha00h4qo0l7kje0isep.apps.googleusercontent.com'
 
     GOOGLE_CLIENT_SECRET = 'AXjCcaejnrzs8ZVZgVVaVcll'
 
     GOOGLE_REDIRECT_URI = 'http://gmail2sfdc.tk/auth/googleAuthCallback'
 
-SFDC_CLIENT_ID = '3MVG9A2kN3Bn17htG_Lafomxe8JS2zgynZ84.Yjm3WU0f2SFvMc9LcjzJExWzHTsTvvLxuq_j8a8ZXPGTBEPq'
+    SFDC_CLIENT_ID = '3MVG9A2kN3Bn17htG_Lafomxe8Ee3W.bdZUHb3XVsUqx2hD2OMMuEUZ0DN_34Oe8IfYbfM5BEcT9bsNtebRlR'
 
-SFDC_CLIENT_SECRET = '1110308827261502813'
+    SFDC_CLIENT_SECRET = '8643476575507910945'
 
-SFDC_REDIRECT_URI = 'http://localhost:8000/auth/sfdcAuthCallback'
+    SFDC_REDIRECT_URI = 'http://localhost:8000/auth/sfdcAuthCallback'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+        },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'gmail2sfdc.log',
+            'formatter': 'verbose'
+        },
+        },
+    'loggers': {
+        'django': {
+            'handlers':['file'],
+            'propagate': True,
+            'level':'DEBUG',
+            },
+        'gmail2sfdc': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            },
+        }
+}
