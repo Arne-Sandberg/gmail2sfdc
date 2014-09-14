@@ -124,7 +124,7 @@ else:
 
     SFDC_CLIENT_SECRET = '8643476575507910945'
 
-    SFDC_REDIRECT_URI = 'http://localhost:8000/auth/sfdcAuthCallback'
+    SFDC_REDIRECT_URI = 'https://gmail2sfdc.tk/auth/sfdcAuthCallback'
 
 
 LOGGING = {
